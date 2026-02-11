@@ -72,41 +72,44 @@ class _MainScreenState extends State<MainScreen> {
       body: Row(
         children: [
           // Side Navigation Rail
-          NavigationRail(
-            selectedIndex: _currentIndex,
-            onDestinationSelected: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            backgroundColor: AppTheme.darkSurface,
-            indicatorColor: AppTheme.primaryOrange.withOpacity(0.3),
-            selectedIconTheme: const IconThemeData(color: AppTheme.primaryOrange),
-            unselectedIconTheme: const IconThemeData(color: AppTheme.lightTextSecondary),
-            selectedLabelTextStyle: const TextStyle(color: AppTheme.primaryOrange),
-            unselectedLabelTextStyle: const TextStyle(color: AppTheme.lightTextSecondary),
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home),
-                label: Text('Home'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.fitness_center_outlined),
-                selectedIcon: Icon(Icons.fitness_center),
-                label: Text('Exercise'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.monitor_weight_outlined),
-                selectedIcon: Icon(Icons.monitor_weight),
-                label: Text('Body Stats'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.insights_outlined),
-                selectedIcon: Icon(Icons.insights),
-                label: Text('Progress'),
-              ),
-            ],
+          SizedBox(
+            width: 80,
+            child: NavigationRail(
+              selectedIndex: _currentIndex,
+              onDestinationSelected: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              backgroundColor: AppTheme.darkSurface,
+              indicatorColor: AppTheme.primaryOrange.withOpacity(0.3),
+              selectedIconTheme: const IconThemeData(color: AppTheme.primaryOrange),
+              unselectedIconTheme: const IconThemeData(color: AppTheme.lightTextSecondary),
+              selectedLabelTextStyle: const TextStyle(color: AppTheme.primaryOrange),
+              unselectedLabelTextStyle: const TextStyle(color: AppTheme.lightTextSecondary),
+              destinations: const [
+                NavigationRailDestination(
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home),
+                  label: Text('Home'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.fitness_center_outlined),
+                  selectedIcon: Icon(Icons.fitness_center),
+                  label: Text('Exercise'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.monitor_weight_outlined),
+                  selectedIcon: Icon(Icons.monitor_weight),
+                  label: Text('Body Stats'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.insights_outlined),
+                  selectedIcon: Icon(Icons.insights),
+                  label: Text('Progress'),
+                ),
+              ],
+            ),
           ),
           const VerticalDivider(width: 1, color: AppTheme.darkSurfaceVariant),
           // Main Content

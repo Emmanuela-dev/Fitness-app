@@ -89,12 +89,15 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
 
             // Date Header
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Icon(Icons.calendar_today, color: AppTheme.primaryOrange),
                 const SizedBox(width: 8),
-                Text(
-                  '${_getDayName(DateTime.now().weekday)}, ${DateTime.now().day} ${_getMonthName(DateTime.now().month)}',
-                  style: Theme.of(context).textTheme.titleMedium,
+                Expanded(
+                  child: Text(
+                    '${_getDayName(DateTime.now().weekday)}, ${DateTime.now().day} ${_getMonthName(DateTime.now().month)}',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
               ],
             ),

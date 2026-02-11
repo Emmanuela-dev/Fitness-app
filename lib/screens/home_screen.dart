@@ -25,22 +25,25 @@ class HomeScreen extends StatelessWidget {
               // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Welcome Back!',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: AppTheme.lightTextSecondary,
-                            ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        userProfile?.name ?? 'Fitness Enthusiast',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Welcome Back!',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: AppTheme.lightTextSecondary,
+                              ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          userProfile?.name ?? 'Fitness Enthusiast',
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(12),
