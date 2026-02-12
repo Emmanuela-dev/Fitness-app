@@ -240,8 +240,60 @@ class HomeScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              // Motivation Message
-              _buildMotivationCard(userProfile?.fitnessGoal ?? 'Stay Active'),
+              // Motivation Cards Section
+              Text(
+                'Daily Motivation',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 160,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    _buildMotivationCard(
+                      icon: Icons.lightbulb,
+                      title: 'Daily Tip',
+                      message: _getMotivationalMessage(userProfile?.fitnessGoal ?? 'Stay Active'),
+                      gradient: AppTheme.orangeGradient,
+                    ),
+                    const SizedBox(width: 12),
+                    _buildMotivationCard(
+                      icon: Icons.emoji_events,
+                      title: 'Achievement',
+                      message: 'You\'re ${caloriesProgress >= 0.5 ? "more than halfway" : "on track"} to your daily goal!',
+                      gradient: LinearGradient(
+                        colors: [Colors.purple.shade600, Colors.purple.shade900],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    _buildMotivationCard(
+                      icon: Icons.favorite,
+                      title: 'Health Fact',
+                      message: 'Regular exercise can improve your mood and reduce stress.',
+                      gradient: LinearGradient(
+                        colors: [Colors.teal.shade600, Colors.teal.shade900],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    _buildMotivationCard(
+                      icon: Icons.star,
+                      title: 'Quote',
+                      message: '"The only bad workout is the one that didn\'t happen."',
+                      gradient: LinearGradient(
+                        colors: [Colors.indigo.shade600, Colors.indigo.shade900],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -328,45 +380,61 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMotivationCard(String goal) {
-    String message = _getMotivationalMessage(goal);
+  Widget _buildMotivationCard({
+    required IconData icon,
+    required String title,
+    required String message,
+    required Gradient gradient,
+  }) {
     return Container(
+      width: 260,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: AppTheme.orangeGradient,
+        gradient: gradient,
         borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.lightbulb, color: AppTheme.lightText),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
           ),
-          const SizedBox(width: 16),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, color: AppTheme.lightText, size: 24),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: AppTheme.lightText,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Daily Tip',
-                  style: const TextStyle(
-                    color: AppTheme.lightText,
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  message,
-                  style: const TextStyle(
-                    color: AppTheme.lightText,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
+            child: Text(
+              message,
+              style: TextStyle(
+                color: AppTheme.lightText.withOpacity(0.9),
+                fontSize: 14,
+                height: 1.4,
+              ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

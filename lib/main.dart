@@ -4,6 +4,7 @@ import 'theme.dart';
 import 'providers/fitness_provider.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/signup_screen.dart';
 import 'screens/profile_setup_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/exercise_screen.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const WelcomeScreen(),
         '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
         '/profileSetup': (context) => const ProfileSetupScreen(),
         '/home': (context) => const MainScreen(),
         '/exercise': (context) => const ExerciseScreen(),
