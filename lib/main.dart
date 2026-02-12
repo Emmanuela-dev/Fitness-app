@@ -12,6 +12,8 @@ import 'screens/body_stats_screen.dart';
 import 'screens/progress_screen.dart';
 import 'screens/daily_log_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/mental_wellness_screen.dart';
+import 'screens/chat_screen.dart';
 
 void main() {
   runApp(
@@ -45,6 +47,8 @@ class MyApp extends StatelessWidget {
         '/progress': (context) => const ProgressScreen(),
         '/dailyLog': (context) => const DailyLogScreen(),
         '/settings': (context) => const SettingsScreen(),
+        '/mentalWellness': (context) => const MentalWellnessScreen(),
+        '/chat': (context) => const ChatScreen(),
       },
     );
   }
@@ -63,6 +67,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const ExerciseScreen(),
+    const MentalWellnessScreen(),
     const BodyStatsScreen(),
     const ProgressScreen(),
   ];
@@ -71,71 +76,65 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.darkBackground,
-      body: Row(
-        children: [
-          // Side Navigation Rail
-          SizedBox(
-            width: 80,
-            child: NavigationRail(
-              selectedIndex: _currentIndex,
-              onDestinationSelected: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              backgroundColor: AppTheme.darkSurface,
-              indicatorColor: AppTheme.primaryOrange.withOpacity(0.3),
-              selectedIconTheme: const IconThemeData(color: AppTheme.primaryOrange),
-              unselectedIconTheme: const IconThemeData(color: AppTheme.lightTextSecondary),
-              selectedLabelTextStyle: const TextStyle(color: AppTheme.primaryOrange),
-              unselectedLabelTextStyle: const TextStyle(color: AppTheme.lightTextSecondary),
-              destinations: const [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(Icons.home),
-                  label: Text('Home'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.fitness_center_outlined),
-                  selectedIcon: Icon(Icons.fitness_center),
-                  label: Text('Exercise'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.monitor_weight_outlined),
-                  selectedIcon: Icon(Icons.monitor_weight),
-                  label: Text('Body Stats'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.insights_outlined),
-                  selectedIcon: Icon(Icons.insights),
-                  label: Text('Progress'),
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        backgroundColor: AppTheme.darkBackground,
+        elevation: 0,
+        title: const Text('Fitness Tracker'),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/chat'),
+            icon: const Icon(Icons.chat_bubble_outline),
+            tooltip: 'AI Chat',
           ),
-          const VerticalDivider(width: 1, color: AppTheme.darkSurfaceVariant),
-          // Main Content
-          Expanded(
-            child: Scaffold(
-              backgroundColor: AppTheme.darkBackground,
-              appBar: AppBar(
-                backgroundColor: AppTheme.darkBackground,
-                elevation: 0,
-                actions: [
-                  IconButton(
-                    onPressed: () => Navigator.pushNamed(context, '/dailyLog'),
-                    icon: const Icon(Icons.list_alt),
-                    tooltip: 'Daily Log',
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.pushNamed(context, '/settings'),
-                    icon: const Icon(Icons.settings),
-                    tooltip: 'Settings',
-                  ),
-                ],
-              ),
-              body: _screens[_currentIndex],
-            ),
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/dailyLog'),
+            icon: const Icon(Icons.list_alt),
+            tooltip: 'Daily Log',
+          ),
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+          ),
+        ],
+      ),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: AppTheme.darkSurface,
+        selectedItemColor: AppTheme.primaryOrange,
+        unselectedItemColor: AppTheme.lightTextSecondary,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fitness_center_outlined),
+            activeIcon: Icon(Icons.fitness_center),
+            label: 'Exercise',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.psychology_outlined),
+            activeIcon: Icon(Icons.psychology),
+            label: 'Mind',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.monitor_weight_outlined),
+            activeIcon: Icon(Icons.monitor_weight),
+            label: 'Body',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.insights_outlined),
+            activeIcon: Icon(Icons.insights),
+            label: 'Progress',
           ),
         ],
       ),

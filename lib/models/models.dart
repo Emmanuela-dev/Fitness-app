@@ -139,3 +139,76 @@ class UserProfile {
     );
   }
 }
+
+// Mental Wellness Models
+class MoodEntry {
+  final String id;
+  final int moodLevel; // 1-5 scale
+  final String moodLabel; // e.g., "Happy", "Stressed", "Calm"
+  final String? notes;
+  final DateTime date;
+  final List<String> activities; // e.g., ["Meditation", "Exercise", "Sleep"]
+
+  MoodEntry({
+    required this.id,
+    required this.moodLevel,
+    required this.moodLabel,
+    this.notes,
+    required this.date,
+    this.activities = const [],
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'moodLevel': moodLevel,
+      'moodLabel': moodLabel,
+      'notes': notes,
+      'date': date.toIso8601String(),
+      'activities': activities,
+    };
+  }
+
+  factory MoodEntry.fromMap(Map<String, dynamic> map) {
+    return MoodEntry(
+      id: map['id'],
+      moodLevel: map['moodLevel'],
+      moodLabel: map['moodLabel'],
+      notes: map['notes'],
+      date: DateTime.parse(map['date']),
+      activities: List<String>.from(map['activities'] ?? []),
+    );
+  }
+}
+
+class ChatMessage {
+  final String id;
+  final String content;
+  final bool isUser;
+  final DateTime timestamp;
+
+  ChatMessage({
+    required this.id,
+    required this.content,
+    required this.isUser,
+    required this.timestamp,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'content': content,
+      'isUser': isUser,
+      'timestamp': timestamp.toIso8601String(),
+    };
+  }
+
+  factory ChatMessage.fromMap(Map<String, dynamic> map) {
+    return ChatMessage(
+      id: map['id'],
+      content: map['content'],
+      isUser: map['isUser'],
+      timestamp: DateTime.parse(map['timestamp']),
+    );
+  }
+}

@@ -12,6 +12,8 @@ class FitnessProvider with ChangeNotifier {
   // Data
   List<Exercise> _exercises = [];
   List<BodyStats> _bodyStats = [];
+  List<MoodEntry> _moodEntries = [];
+  List<ChatMessage> _chatMessages = [];
 
   // Goals
   double _dailyCalorieGoal = 500.0;
@@ -27,6 +29,8 @@ class FitnessProvider with ChangeNotifier {
   UserProfile? get userProfile => _userProfile;
   List<Exercise> get exercises => [..._exercises];
   List<BodyStats> get bodyStats => [..._bodyStats];
+  List<MoodEntry> get moodEntries => [..._moodEntries];
+  List<ChatMessage> get chatMessages => [..._chatMessages];
 
   double get dailyCalorieGoal => _dailyCalorieGoal;
   int get dailyExerciseMinutesGoal => _dailyExerciseMinutesGoal;
@@ -176,5 +180,116 @@ class FitnessProvider with ChangeNotifier {
     const weight = 70.0;
     final met = metValues[exerciseType] ?? 5.0;
     return (met * weight * durationMinutes) / 60;
+  }
+
+  // Mental Wellness Methods
+  void addMoodEntry(MoodEntry entry) {
+    _moodEntries.add(entry);
+    notifyListeners();
+  }
+
+  void deleteMoodEntry(String id) {
+    _moodEntries.removeWhere((e) => e.id == id);
+    notifyListeners();
+  }
+
+  MoodEntry? get todayMood {
+    final today = DateTime.now();
+    final todayEntries = _moodEntries.where((e) =>
+      e.date.year == today.year &&
+      e.date.month == today.month &&
+      e.date.day == today.day
+    ).toList();
+    if (todayEntries.isEmpty) return null;
+    todayEntries.sort((a, b) => b.date.compareTo(a.date));
+    return todayEntries.first;
+  }
+
+  List<MoodEntry> get weeklyMoods {
+    final today = DateTime.now();
+    final weekAgo = today.subtract(const Duration(days: 7));
+    return _moodEntries.where((e) => e.date.isAfter(weekAgo)).toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
+  }
+
+  double get averageMoodThisWeek {
+    final moods = weeklyMoods;
+    if (moods.isEmpty) return 0;
+    return moods.fold(0.0, (sum, e) => sum + e.moodLevel) / moods.length;
+  }
+
+  // Chat Methods
+  void addChatMessage(ChatMessage message) {
+    _chatMessages.add(message);
+    notifyListeners();
+  }
+
+  void clearChatHistory() {
+    _chatMessages.clear();
+    notifyListeners();
+  }
+
+  // AI Response Generator (Simple rule-based responses)
+  String generateAIResponse(String userMessage) {
+    final message = userMessage.toLowerCase();
+    
+    // Greeting responses
+    if (message.contains('hello') || message.contains('hi') || message.contains('hey')) {
+      return "Hello! I'm your wellness assistant. How can I help you today? You can ask me about fitness tips, mental wellness, or just chat!";
+    }
+    
+    // Mood-related
+    if (message.contains('sad') || message.contains('down') || message.contains('depressed')) {
+      return "I'm sorry to hear you're feeling down. Remember, it's okay to have tough days. Try some light exercise or meditation - they can really help boost your mood. Would you like some tips?";
+    }
+    
+    if (message.contains('stressed') || message.contains('anxious') || message.contains('anxiety')) {
+      return "Stress is tough, but you're tougher! Try deep breathing: inhale for 4 counts, hold for 4, exhale for 4. Also, physical activity is a great stress reliever. Even a 10-minute walk can help!";
+    }
+    
+    if (message.contains('happy') || message.contains('great') || message.contains('good')) {
+      return "That's wonderful to hear! Keep that positive energy going. What's been making you feel good today?";
+    }
+    
+    // Fitness-related
+    if (message.contains('workout') || message.contains('exercise')) {
+      return "Great question about exercise! For beginners, start with 20-30 minutes of activity 3-4 times a week. Mix cardio (like walking or cycling) with strength training. What type of workout interests you?";
+    }
+    
+    if (message.contains('weight') || message.contains('lose') || message.contains('gain')) {
+      return "Weight management is about balance - nutrition and exercise work together. Focus on consistent habits rather than quick fixes. Would you like tips on healthy eating or workout routines?";
+    }
+    
+    if (message.contains('tired') || message.contains('energy') || message.contains('fatigue')) {
+      return "Feeling tired? Make sure you're getting 7-9 hours of sleep, staying hydrated, and eating balanced meals. Light exercise can actually boost your energy levels!";
+    }
+    
+    // Sleep
+    if (message.contains('sleep') || message.contains('insomnia')) {
+      return "Good sleep is crucial for both physical and mental health. Try to keep a consistent sleep schedule, avoid screens before bed, and create a relaxing bedtime routine. Meditation can also help!";
+    }
+    
+    // Motivation
+    if (message.contains('motivation') || message.contains('motivated') || message.contains('lazy')) {
+      return "Motivation comes and goes, but discipline stays! Start small - even 5 minutes of activity counts. Set specific goals, track your progress, and celebrate small wins. You've got this!";
+    }
+    
+    // Meditation/Mindfulness
+    if (message.contains('meditat') || message.contains('mindful') || message.contains('calm')) {
+      return "Meditation is amazing for mental wellness! Start with just 5 minutes of focused breathing. Apps can guide you, or simply sit quietly and focus on your breath. Would you like a simple exercise?";
+    }
+    
+    // Help
+    if (message.contains('help') || message.contains('what can you do')) {
+      return "I'm here to support your wellness journey! You can:\n• Ask about fitness tips and workouts\n• Talk about how you're feeling\n• Get advice on sleep and stress\n• Learn about meditation and mindfulness\n• Just chat when you need support!";
+    }
+    
+    // Thank you
+    if (message.contains('thank')) {
+      return "You're welcome! I'm always here to help. Is there anything else you'd like to know?";
+    }
+    
+    // Default response
+    return "I hear you! While I'm a simple assistant, I'm here to support your wellness journey. Feel free to ask about fitness, mental health, sleep, or just share how you're feeling today.";
   }
 }
